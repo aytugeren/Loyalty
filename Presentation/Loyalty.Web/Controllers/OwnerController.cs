@@ -9,6 +9,6 @@ namespace Loyalty.Web.Controllers
 {
     public class OwnerController : ControllerBase
     {
-
+        private readonly IOwnerService _ownerService;
     }
 }
