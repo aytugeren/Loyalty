@@ -41,8 +41,7 @@ namespace Loyalty.Web.Controllers
             var IsUserValid = _authenticationService.IsUserValid(customerDTO);
             if (!IsUserValid)
             {
-                _authenticationService.HashPassword(customerDTO.Password);
-                _customerService.InsertCustomer(customerDTO);
+                _authenticationService.saveUser(customerDTO);
             }
             else
             {
@@ -62,13 +61,13 @@ namespace Loyalty.Web.Controllers
             }
 
             var customer = _customerService.GetById(id);
-            var IsUserValid = _authenticationService.IsUserValid(customer);
-            if (IsUserValid)
+            if (customer != default(CustomerDTO))
             {
                 _customerService.DeleteCustomer(customer);
+                return true;
             }
 
-            return IsUserValid;
+            return false;
         }
 
         [HttpPost]

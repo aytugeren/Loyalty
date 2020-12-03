@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Loyalty.Business.OwnerServiceFolder
 {
-    public interface IAuthenticationService
+    public interface IAuthenticationOwnerService
     {
         string HashPassword(string password);
 

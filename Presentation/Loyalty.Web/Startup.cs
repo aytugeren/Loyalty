@@ -49,6 +49,7 @@ namespace Loyalty.Web
             services.AddTransient<IStoreService, StoreService>();
             services.AddTransient<IOwnerService, OwnerService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IAuthenticationOwnerService, AuthenticationOwnerService>();
             services.AddTransient<ICustomerStoreService, CustomerStoreService>();
         }
 
