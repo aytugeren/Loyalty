@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Service", "Library\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Business", "Library\Loyalty.Business\Loyalty.Business.csproj", "{87A9048A-267F-4F02-9E6A-7979DB6DDE7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Web", "Presentation\Loyalty.Web\Loyalty.Web.csproj", "{557D41D8-1CD9-436E-81DE-740779D1B451}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Web", "Presentation\Loyalty.Web\Loyalty.Web.csproj", "{557D41D8-1CD9-436E-81DE-740779D1B451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Admin", "Presentation\Loyalty.Admin\Loyalty.Admin.csproj", "{A0EAF1BD-B910-42E5-95C2-7DC870E6C303}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{557D41D8-1CD9-436E-81DE-740779D1B451}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{557D41D8-1CD9-436E-81DE-740779D1B451}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{557D41D8-1CD9-436E-81DE-740779D1B451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0EAF1BD-B910-42E5-95C2-7DC870E6C303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0EAF1BD-B910-42E5-95C2-7DC870E6C303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0EAF1BD-B910-42E5-95C2-7DC870E6C303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0EAF1BD-B910-42E5-95C2-7DC870E6C303}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{58B0FA8B-A24C-4638-8F71-FE365B3DAC79} = {6F2D0B12-AA37-4DDF-A6B4-7D9D37CEEFBB}
 		{87A9048A-267F-4F02-9E6A-7979DB6DDE7C} = {6F2D0B12-AA37-4DDF-A6B4-7D9D37CEEFBB}
 		{557D41D8-1CD9-436E-81DE-740779D1B451} = {59D8AA6E-5CA6-43F4-AFE2-81633F600B0D}
+		{A0EAF1BD-B910-42E5-95C2-7DC870E6C303} = {59D8AA6E-5CA6-43F4-AFE2-81633F600B0D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82A7E5EB-4442-49BA-B8B7-870D1F3EA7A7}
