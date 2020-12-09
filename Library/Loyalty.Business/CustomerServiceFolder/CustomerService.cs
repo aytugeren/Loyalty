@@ -71,7 +71,6 @@ namespace Loyalty.Business.CustomerServiceFolder
             c.Firstname = customer.Firstname;
             c.Surname = customer.Surname;
             c.Email = customer.Email;
-            c.Age = customer.Age;
             c.Password = customer.Password;
             c.Point = customer.Point;
             c.UpdatedTime = DateTime.Now;

@@ -14,6 +14,10 @@ namespace Loyalty.Service.Mapping
             builder.HasMany<Store>(x => x.Stores)
                 .WithOne(x => x.Owner)
                 .HasForeignKey(x => x.OwnerId);
+            builder.Property(x => x.IsActive).HasDefaultValue(true);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
+            builder.Property(x => x.Point).HasDefaultValue(0);
+            builder.Property(x => x.UpdatedTime).IsRequired(false);
         }
     }
 }

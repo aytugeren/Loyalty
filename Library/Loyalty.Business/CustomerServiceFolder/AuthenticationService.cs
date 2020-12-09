@@ -24,15 +24,15 @@ namespace Loyalty.Business.CustomerServiceFolder
 
         public string HashPassword(string password)
         {
-            SHA1 encrypt = new SHA1CryptoServiceProvider();
-            var encrypted = encrypt.ComputeHash(Encoding.UTF8.GetBytes(password + saltPassword));
-            var sb = new StringBuilder(encrypted.Length * 2);
-            foreach (byte b in encrypted)
-            {
-                sb.Append(b.ToString("x2"));
-            }
-            string encryptedPassword = sb.ToString();
-            return encryptedPassword;
+            //SHA1 encrypt = new SHA1CryptoServiceProvider();
+            //var encrypted = encrypt.ComputeHash(Encoding.UTF8.GetBytes(password + saltPassword));
+            //var sb = new StringBuilder(encrypted.Length * 2);
+            //foreach (byte b in encrypted)
+            //{
+            //    sb.Append(b.ToString("x2"));
+            //}
+            //string encryptedPassword = sb.ToString();
+            return password;
         }
 
         public bool IsUserValid(CustomerDTO customerDTO)
@@ -57,7 +57,10 @@ namespace Loyalty.Business.CustomerServiceFolder
 
         public void saveUser(CustomerDTO customerDTO)
         {
+            Random random = new Random();
             customerDTO.Password = HashPassword(customerDTO.Password);
+            customerDTO.Password = random.Next(1000, 9999).ToString();
+            customerDTO.CreatedTime = DateTime.Now;
             _customerRepository.Insert(_mapper.Map<Customer>(customerDTO));
         }
     }

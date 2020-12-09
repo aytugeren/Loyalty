@@ -16,7 +16,7 @@ namespace Loyalty.Service
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server = DESKTOP-VD01PB5\SQLEXPRESS; Database=Loyalty;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer(@"Server = DESKTOP-DHVOGDN; Database=Loyalty;Trusted_Connection=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,6 +24,7 @@ namespace Loyalty.Service
             modelBuilder.ApplyConfiguration(new CustomerMapping());
             modelBuilder.ApplyConfiguration(new CustomerStoreMapping());
             modelBuilder.ApplyConfiguration(new OwnerMapping());
+            modelBuilder.ApplyConfiguration(new StoreMapping());
         }
 
         public DbSet<Customer> tblCustomer { get; set; }
@@ -33,7 +34,5 @@ namespace Loyalty.Service
         public DbSet<CustomerStore> tblCustomerStore { get; set; }
 
         public DbSet<Owner> tblOwner { get; set; }
-
-        public DbSet<Address> tblAddress { get; set; }
     }
 }

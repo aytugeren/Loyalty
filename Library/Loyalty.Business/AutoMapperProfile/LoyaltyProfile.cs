@@ -15,8 +15,6 @@ namespace Loyalty.Business.AutoMapperProfile
             MapperConfiguration mapperConfiguration = new MapperConfiguration(cfg => {
                 cfg.CreateMap<Customer, CustomerDTO>();
                 cfg.CreateMap<CustomerDTO, Customer>();
-                cfg.CreateMap<Address, AddressDTO>();
-                cfg.CreateMap<AddressDTO, Address>();
                 cfg.CreateMap<Owner, OwnerDTO>();
                 cfg.CreateMap<OwnerDTO, Owner>();
                 cfg.CreateMap<Store, StoreDTO>();

@@ -11,9 +11,12 @@ namespace Loyalty.Service.Mapping
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
-            builder.HasMany<Address>(x => x.Addresses)
-                .WithOne(x => x.Customer)
-                .HasForeignKey(x => x.CustomerId);
+            builder.Property(x => x.IsActive).HasDefaultValue(true);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
+            builder.Property(x => x.Point).HasDefaultValue(0);
+            builder.Property(x => x.UpdatedTime).IsRequired(false);
+            builder.Property(x => x.Password).IsRequired(false);
+
         }
     }
 }

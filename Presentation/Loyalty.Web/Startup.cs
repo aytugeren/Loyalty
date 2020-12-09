@@ -1,5 +1,4 @@
 using AutoMapper;
-using Loyalty.Business.AddressServiceFolder;
 using Loyalty.Business.AutoMapperProfile;
 using Loyalty.Business.CustomerServiceFolder;
 using Loyalty.Business.CustomerStoreServiceFolder;
@@ -44,7 +43,6 @@ namespace Loyalty.Web
             services.AddTransient<LoyaltyDbContext>();
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddTransient(typeof(LoyaltyProfile));
-            services.AddTransient<IAddressService, AddressService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IStoreService, StoreService>();
             services.AddTransient<IOwnerService, OwnerService>();
@@ -63,7 +61,7 @@ namespace Loyalty.Web
 
             app.UseCors(options =>
             {
-                options.WithOrigins("http://localhost:3000");
+                options.AllowAnyOrigin();
                 options.AllowAnyHeader();
                 options.AllowAnyMethod();
             });

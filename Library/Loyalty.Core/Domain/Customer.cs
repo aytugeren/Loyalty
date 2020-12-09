@@ -9,11 +9,9 @@ namespace Loyalty.Core.Domain
         public string Firstname { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
-        public int Age { get; set; }
         public string Password { get; set; }
         public decimal Point { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<CustomerStore> CustomerStores { get; set; }
     }
 }
