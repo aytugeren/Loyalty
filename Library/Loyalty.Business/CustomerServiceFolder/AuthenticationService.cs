@@ -24,14 +24,14 @@ namespace Loyalty.Business.CustomerServiceFolder
 
         public string HashPassword(string password)
         {
-            //SHA1 encrypt = new SHA1CryptoServiceProvider();
-            //var encrypted = encrypt.ComputeHash(Encoding.UTF8.GetBytes(password + saltPassword));
-            //var sb = new StringBuilder(encrypted.Length * 2);
-            //foreach (byte b in encrypted)
-            //{
-            //    sb.Append(b.ToString("x2"));
-            //}
-            //string encryptedPassword = sb.ToString();
+            SHA1 encrypt = new SHA1CryptoServiceProvider();
+            var encrypted = encrypt.ComputeHash(Encoding.UTF8.GetBytes(password + saltPassword));
+            var sb = new StringBuilder(encrypted.Length * 2);
+            foreach (byte b in encrypted)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+            string encryptedPassword = sb.ToString();
             return password;
         }
 

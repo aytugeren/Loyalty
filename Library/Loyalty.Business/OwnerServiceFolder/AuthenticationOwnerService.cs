@@ -39,7 +39,7 @@ namespace Loyalty.Business.OwnerServiceFolder
         {
             bool isValid = false;
             ownerDTO.Password = HashPassword(ownerDTO.Password);
-            var result = _ownerRepository.GetAll().FirstOrDefault(x => (x.Firstname.ToLower() == ownerDTO.Email.ToLower()));
+            var result = _ownerRepository.GetAll().FirstOrDefault(x => (x.Email.ToLower() == ownerDTO.Email.ToLower()));
             if (result != null)
             {
                 if (ownerDTO.Email.Contains("@"))

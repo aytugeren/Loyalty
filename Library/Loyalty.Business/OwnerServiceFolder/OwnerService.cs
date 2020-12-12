@@ -4,6 +4,7 @@ using Loyalty.Core.Domain;
 using Loyalty.Service;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Loyalty.Business.OwnerServiceFolder
@@ -46,6 +47,17 @@ namespace Loyalty.Business.OwnerServiceFolder
             if (id == Guid.Empty)
                 throw new ArgumentNullException("Parameter is null");
             var owner = _ownerRepository.GetById(id);
+            return _mapper.Map<OwnerDTO>(owner);
+        }
+
+        public OwnerDTO GetOwnerWithEmail(string email)
+        {
+            if (email == null)
+            {
+                throw new ArgumentNullException("Parameter is null");
+            }
+            var owner = _ownerRepository.GetAll().FirstOrDefault(x => x.Email == email);
+
             return _mapper.Map<OwnerDTO>(owner);
         }
 

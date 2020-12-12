@@ -49,6 +49,24 @@ namespace Loyalty.Web.Controllers
         }
 
         [HttpPost]
+        [Route("IsOwnerValid")]
+        public bool IsOwnerValid(OwnerDTO ownerDTO)
+        {
+            if (ownerDTO == default(OwnerDTO))
+                return false;
+
+            var isUserValid = _authenticationOwnerService.IsUserValid(ownerDTO);
+            if (isUserValid)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        [HttpPost]
         [Route("DeleteOwner/{id}")]
         public string DeleteOwner(Guid id)
         {

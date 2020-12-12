@@ -13,7 +13,10 @@ namespace Loyalty.Business.OwnerServiceFolder
 
         List<OwnerDTO> GetAllOwners();
 
+        OwnerDTO GetOwnerWithEmail(string email);
+
         void InsertOwner(OwnerDTO owner);
+
 
         void UpdateOwner(OwnerDTO owner);
     }

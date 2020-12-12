@@ -1,18 +1,23 @@
-import React, {Component} from 'react';
-import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import React, {Component, Fragment} from 'react';
+import { Col, Row, Button, Form, FormGroup, Label, Input, Modal,ModalBody,ModalFooter,ModalHeader } from 'reactstrap';
 import axios from 'axios';
+import '../css/Customer.css';
+import * as IconName from 'react-icons/fa';
+import { AiTwotoneRightSquare } from 'react-icons/ai';
 
 
-export class Customer extends Component {
+export default class Customer extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       firstname : "",
       surname : "",
-      email : ""
+      email : "",
+      show : false
     }
   }
+  
 
   addCustomer = (url = "http://localhost:53055/api/Customer/SignUp") =>{
     return {
@@ -20,17 +25,29 @@ export class Customer extends Component {
     }
   }
 
-  success = () => {
-    console.log(this.state);
+  refreshPage = () =>{
+    window.location.reload();
   }
 
   submitCustomer = () => {
-  this.addCustomer().update(this.state).then(this.success()).catch(err => console.log(err));
+  this.addCustomer().update(this.state).then(this.refreshPage()).catch(err => console.log(err));
+  this.handleClose();
+  }
+
+
+  handleClose = () => {
+    var sshow = this.state.show;
+    this.setState({show : !sshow})
   }
 
   render() {
     return (
-      <div className="reports">
+      <Fragment>
+      
+      <Modal isOpen={this.state.show} toggle={this.handleClose} size="l" className="popupModal">
+        <ModalHeader><IconName.FaWindowClose onClick={this.handleClose} /></ModalHeader>
+        <ModalBody>
+      <div className="popupModal">
         <Form method="POST">
           <Row form>
             <Col md={6}>
@@ -73,9 +90,15 @@ export class Customer extends Component {
           </Button>
         </Form>
       </div>
+      </ModalBody>
+      <ModalFooter></ModalFooter>
+      </Modal>
+      <Button variant="primary" onClick={this.handleClose} show={this.state.show}>
+        Add Customer
+      </Button>
+      </Fragment>
     );
   }
 }
 
-export default Customer
 

@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 
-export default class PointSystem extends Component {
+export class CustomerFunctions extends Component {
     render() {
         return (
             <div>
-                <h1>Point system</h1>
+                
             </div>
         )
     }
 }
+
+export default CustomerFunctions
