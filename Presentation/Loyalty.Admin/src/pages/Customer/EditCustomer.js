@@ -1,12 +1,12 @@
 import React, {Component, Fragment} from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Modal,ModalBody,ModalFooter,ModalHeader } from 'reactstrap';
 import axios from 'axios';
-import '../css/Customer.css';
+import '../../css/EditCustomer.css';
 import * as IconName from 'react-icons/fa';
 import { AiTwotoneRightSquare } from 'react-icons/ai';
 
 
-export default class Customer extends Component {
+export default class EditCustomer extends Component {
 
   constructor(props) {
     super(props);
@@ -19,7 +19,7 @@ export default class Customer extends Component {
   }
   
 
-  addCustomer = (url = "http://localhost:53055/api/Customer/SignUp") =>{
+  updateCustomer = (url = "http://localhost:53055/api/Customer/UpdateCustomer") =>{
     return {
       update : (body) => axios.post(url,body)
     }
@@ -30,7 +30,7 @@ export default class Customer extends Component {
   }
 
   submitCustomer = () => {
-  this.addCustomer().update(this.state).then(this.refreshPage()).catch(err => console.log(err));
+  this.updateCustomer().update(this.state).then(this.refreshPage()).catch(err => console.log(err));
   this.handleClose();
   }
 
@@ -43,7 +43,6 @@ export default class Customer extends Component {
   render() {
     return (
       <Fragment>
-      
       <Modal isOpen={this.state.show} toggle={this.handleClose} size="l" className="popupModal">
         <ModalHeader><IconName.FaWindowClose onClick={this.handleClose} /></ModalHeader>
         <ModalBody>
@@ -93,8 +92,8 @@ export default class Customer extends Component {
       </ModalBody>
       <ModalFooter></ModalFooter>
       </Modal>
-      <Button className="addButton" onClick={this.handleClose}>
-        Add Customer
+      <Button className="editButton" onClick={this.handleClose} show={this.state.show}>
+        Edit Customer
       </Button>
       </Fragment>
     );

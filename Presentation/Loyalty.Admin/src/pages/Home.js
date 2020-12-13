@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import Owner from "./Owner/Owner";
 import axios from "axios";
+import Cookies from 'universal-cookie';
 
 export default class Home extends Component {
   constructor(props) {
@@ -18,8 +19,12 @@ export default class Home extends Component {
     this.state = {
       email: "",
       password: "",
+      data : null
     };
+
   }
+
+  
 
   checkOwner = (url = "http://localhost:53055/api/Owner/IsOwnerValid") => {
     return {
@@ -32,10 +37,23 @@ export default class Home extends Component {
   };
 
   handleCheck = () => {
+    var cookies = new Cookies();
     this.checkOwner()
       .update(this.state)
-      .then(<Alert color="success">Var abi!</Alert>)
-      .catch((err) => <Alert color="danger">Hata!</Alert>);
+      .then(response => {
+        if(response.data){
+          this.setState(response.data);
+          cookies.set('id', response.id, {path: '/'})
+          cookies.set('firstname', response.firstname, {path: '/'})
+          cookies.set('surname', response.surname, {path: '/'})
+          cookies.set('email', response.email, {path: '/'})
+          cookies.set('password', response.password, {path: '/'})
+          this.props.history.push('/Dashboard');
+        }else{
+          alert("Hata!");
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   render() {

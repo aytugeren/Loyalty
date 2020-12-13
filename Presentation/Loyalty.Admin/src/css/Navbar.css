@@ -21,6 +21,7 @@
   position: fixed;
   top: 0;
   transition: 850ms;
+  z-index: 999;
 }
 
 .nav-text {

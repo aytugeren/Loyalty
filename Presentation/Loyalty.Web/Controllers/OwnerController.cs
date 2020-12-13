@@ -39,7 +39,7 @@ namespace Loyalty.Web.Controllers
             var isUserValid = _authenticationOwnerService.IsUserValid(ownerDTO);
             if (!isUserValid)
             {
-                _authenticationOwnerService.saveUser(ownerDTO);
+                _ownerService.InsertOwner(ownerDTO);
                 return true;
             }
             else
@@ -50,19 +50,20 @@ namespace Loyalty.Web.Controllers
 
         [HttpPost]
         [Route("IsOwnerValid")]
-        public bool IsOwnerValid(OwnerDTO ownerDTO)
+        public OwnerDTO IsOwnerValid(OwnerDTO ownerDTO)
         {
             if (ownerDTO == default(OwnerDTO))
-                return false;
+                throw new ArgumentNullException("Bos Parametre");
 
             var isUserValid = _authenticationOwnerService.IsUserValid(ownerDTO);
+            var owner = _ownerService.GetOwnerWithEmail(ownerDTO.Email);
             if (isUserValid)
             {
-                return true;
+                return owner;
             }
             else
             {
-                return false;
+                throw new ArgumentNullException("Bos Parametre");
             }
         }
 

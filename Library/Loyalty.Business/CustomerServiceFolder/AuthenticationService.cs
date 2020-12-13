@@ -42,14 +42,15 @@ namespace Loyalty.Business.CustomerServiceFolder
             var result = _customerRepository.GetAll().FirstOrDefault(x => (x.Email.ToLower() == customerDTO.Email.ToLower()));
             if (result != null)
             {
-                if (customerDTO.Email.Contains("@"))
+                if (customerDTO.Email.Contains("@") && customerDTO.Password == result.Password)
                 {
-                    var customers = _customerRepository.GetById(customerDTO.Id);
-                    isValid = true;
+                    var customers = _customerRepository.GetById(result.Id);
+                    if (customers != null)
+                        return true;
                 }
                 else
                 {
-                    throw new ArgumentNullException("CustomerDTO");
+                    return false;
                 }
             }
             return isValid;

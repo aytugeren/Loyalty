@@ -42,10 +42,11 @@ namespace Loyalty.Business.OwnerServiceFolder
             var result = _ownerRepository.GetAll().FirstOrDefault(x => (x.Email.ToLower() == ownerDTO.Email.ToLower()));
             if (result != null)
             {
-                if (ownerDTO.Email.Contains("@"))
+                if (ownerDTO.Email.Contains("@") && ownerDTO.Password == result.Password)
                 {
-                    var customers = _ownerRepository.GetById(ownerDTO.Id);
-                    isValid = true;
+                    var customers = _ownerRepository.GetById(result.Id);
+                    if (customers != null)
+                        isValid = true;
                 }
                 else
                 {

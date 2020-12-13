@@ -1,0 +1,25 @@
+.searchBox {
+    width: 150px;
+    padding-left: 10px;
+}
+.containerDashboard {
+    display: inline-flex;
+    margin: 5px;
+    padding: 5px;
+}
+.rightContainer{
+    float:right;
+    display: inline-flex;
+    flex-direction: row;
+    padding : 5px;
+}
+.exitButton {
+    padding-right: 5px;
+}
+.addButtonPrefix {
+    padding-right: 5px;
+}
+.checkbox {
+    border-radius: 5px;
+    padding-left: 15px;
+}
