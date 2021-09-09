@@ -13,6 +13,7 @@ namespace Loyalty.Business.CustomerServiceFolder
 
         List<CustomerDTO> GetAllCustomers();
 
+        int GetCustomersCount();
         void InsertCustomer(CustomerDTO customer);
 
         void UpdateCustomer(CustomerDTO customer);

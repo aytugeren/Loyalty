@@ -36,7 +36,7 @@ namespace Loyalty.Service
         /// To Update Entity
         /// </summary>
         /// <param name="entity"></param>
-        void Update(T entity);
+        int Update(T entity);
 
         /// <summary>
         /// Update Entities

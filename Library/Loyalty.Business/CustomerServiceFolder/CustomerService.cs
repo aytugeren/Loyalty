@@ -44,6 +44,12 @@ namespace Loyalty.Business.CustomerServiceFolder
             return CustomerDTOs;
         }
 
+        public int GetCustomersCount()
+        {
+            var customers = _customerRepository.GetAll().Count;
+            return customers;
+        }
+
         public CustomerDTO GetById(Guid id)
         {
             if (id == Guid.Empty)

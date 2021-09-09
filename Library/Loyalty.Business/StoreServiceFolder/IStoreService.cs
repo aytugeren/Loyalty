@@ -13,8 +13,12 @@ namespace Loyalty.Business.StoreServiceFolder
 
         List<StoreDTO> GetAllStores();
 
-        void InsertStore(StoreDTO store);
+        int InsertStore(StoreDTO store);
 
         void UpdateStore(StoreDTO store);
+
+        int UpdateThreshHold(decimal threshHold, Guid storeId);
+
+        int StoresCount();
     }
 }

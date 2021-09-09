@@ -1,5 +1,6 @@
 ﻿using Loyalty.Business.CustomerServiceFolder;
 using Loyalty.Business.DTO;
+using Loyalty.Core;
 using Loyalty.Web.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,122 +26,169 @@ namespace Loyalty.Web.Controllers
 
         [HttpPost]
         [Route("GetCustomers")]
-        public List<CustomerDTO> GetCustomers()
+        public MVCResultModel<List<CustomerDTO>> GetCustomers()
         {
+            var result = new MVCResultModel<List<CustomerDTO>>();
             var customers = _customerService.GetAllCustomers();
+            int count = _customerService.GetCustomersCount();
 
-            return customers;
+            result.SetData(customers);
+            result.SetCount(count);
+            return result;
         }
 
         [HttpPost]
         [Route("SignUp")]
-        public bool SignUp(CustomerDTO customerDTO)
+        public MVCResultModel<bool> SignUp(CustomerDTO customerDTO)
         {
+            var result = new MVCResultModel<bool>();
+
             if (customerDTO == default(CustomerDTO))
-                throw new ArgumentNullException("CustomerDTO");
+                result.SetException(new ArgumentNullException());
             var IsUserValid = _authenticationService.IsUserValid(customerDTO);
             if (!IsUserValid)
             {
                 _authenticationService.saveUser(customerDTO);
+                result.SetData(true);
             }
             else
             {
-                throw new Exception("Customer is Valid!");
+                result.SetException(new Exception());
             }
 
-            return true;
+            return result;
         }
 
         [HttpPost]
         [Route("DeleteCustomer/{id}")]
-        public bool DeleteCustomer(Guid id)
+        public MVCResultModel<bool> DeleteCustomer(Guid id)
         {
+            var result = new MVCResultModel<bool>();
+
             if (id == Guid.Empty)
             {
-                throw new Exception("Parameter is null!");
+                result.SetException(new ArgumentNullException());
             }
 
             var customer = _customerService.GetById(id);
             if (customer != default(CustomerDTO))
             {
                 _customerService.DeleteCustomer(customer);
-                return true;
+                result.SetData(true);
+            }
+            else
+            {
+                result.SetException(new Exception());
             }
 
-            return false;
+            return result;
         }
 
         [HttpPost]
         [Route("UpdateCustomer")]
-        public bool UpdateCustomer(CustomerDTO customer)
+        public MVCResultModel<bool> UpdateCustomer(CustomerDTO customer)
         {
+            var result = new MVCResultModel<bool>();
+
             if (customer == default(CustomerDTO))
             {
-                return false;
+                result.SetException(new ArgumentNullException());
             }
+            try
+            {
+                var customerInfo = _customerService.GetById(customer.Id);
+                if (!String.IsNullOrEmpty(customer.Firstname))
+                {
+                    customerInfo.Firstname = customer.Firstname;
+                }
+                if (!String.IsNullOrEmpty(customer.Lastname))
+                {
+                    customerInfo.Lastname = customer.Lastname;
+                }
+                if (!String.IsNullOrEmpty(customer.Password))
+                {
+                    customerInfo.Password = customer.Password;
+                }
+                if (customer.Point != 0)
+                {
+                    customerInfo.Point = customer.Point;
+                }
+                if (!String.IsNullOrEmpty(customer.Email))
+                {
+                    customerInfo.Email = customer.Email;
+                }
+                if (customer.IsActive == true)
+                {
+                    customerInfo.IsActive = true;
+                }
+                if (customer.IsDeleted == false)
+                {
+                    customerInfo.IsDeleted = false;
+                }
 
-            var customerInfo = _customerService.GetById(customer.Id);
-            if (!String.IsNullOrEmpty(customer.Firstname))
-            {
-                customerInfo.Firstname = customer.Firstname;
+                _customerService.UpdateCustomer(customerInfo);
+                result.SetData(true);
             }
-            if (!String.IsNullOrEmpty(customer.Lastname))
+            catch (Exception)
             {
-                customerInfo.Lastname = customer.Lastname;
+                result.SetData(false);
+                result.SetException(new Exception());
             }
-            if (!String.IsNullOrEmpty(customer.Password))
-            {
-                customerInfo.Password = customer.Password;
-            }
-            if (customer.Point != 0)
-            {
-                customerInfo.Point = customer.Point;
-            }
-            if (!String.IsNullOrEmpty(customer.Email))
-            {
-                customerInfo.Email = customer.Email;
-            }
-            if (customer.IsActive == true)
-            {
-                customerInfo.IsActive = true;
-            }
-            if (customer.IsDeleted == false)
-            {
-                customerInfo.IsDeleted = false;
-            }
+            
 
-            _customerService.UpdateCustomer(customerInfo);
-
-            return true;
+            return result;
         }
 
         [HttpPost]
         [Route("GetCustomerById/{id}")]
-        public CustomerDTO GetCustomerById(Guid id)
+        public MVCResultModel<CustomerDTO> GetCustomerById(Guid id)
         {
+            var result = new MVCResultModel<CustomerDTO>();
             if (id == Guid.Empty)
-                throw new ArgumentNullException("Parameter is null");
-
-            var customer = _customerService.GetById(id);
-            return customer;
+            {
+                result.SetException(new ArgumentNullException());
+                return result;
+            }
+            try
+            {
+                var customer = _customerService.GetById(id);
+                result.SetData(customer);
+            }
+            catch (Exception)
+            {
+                result.SetException(new Exception());
+            }
+            return result;
         }
 
         [HttpPost]
         [Route("UpdatePoint")]
-        public CustomerDTO UpdatePointOfCustomer(AmountModel model)
+        public MVCResultModel<CustomerDTO> UpdatePointOfCustomer(AmountModel model)
         {
+            var result = new MVCResultModel<CustomerDTO>();
             if (model.Amount == 0 || model.CustomerId == Guid.Empty)
-                throw new ArgumentNullException("Parameters are null!");
-
-            var customer = _customerService.GetById(model.CustomerId);
-            if(customer == default(CustomerDTO))
             {
-                throw new ArgumentException("Wrong Id");
+                result.SetException(new ArgumentNullException());
+                return result;
+            }
+            try
+            {
+                var customer = _customerService.GetById(model.CustomerId);
+                if (customer == default(CustomerDTO))
+                {
+                    result.SetException(new NullReferenceException());
+                    return result;
+                }
+
+                customer.Point += ((Math.Round(model.Amount, 2))) * model.Percent;
+                UpdateCustomer(customer);
+            }
+            catch (Exception)
+            {
+                result.SetException(new Exception());
             }
 
-            customer.Point += ((Math.Round(model.Amount, 2) / 100)) * model.Percent;
-            UpdateCustomer(customer);
-            return customer;
+            return result;
         }
 
       

@@ -1,5 +1,6 @@
 ﻿using Loyalty.Business.DTO;
 using Loyalty.Business.OwnerServiceFolder;
+using Loyalty.Core;
 using Loyalty.Web.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,74 +25,91 @@ namespace Loyalty.Web.Controllers
 
         [HttpPost]
         [Route("GetOwners")]
-        public List<OwnerDTO> GetOwners()
+        public MVCResultModel<List<OwnerDTO>> GetOwners()
         {
-            var owners = _ownerService.GetAllOwners();
-            return owners;
+            var result = new MVCResultModel<List<OwnerDTO>>();
+            result.SetData(_ownerService.GetAllOwners());
+            result.SetCount(_ownerService.GetOwnersCount());
+            return result;
         }
 
         [HttpPost]
         [Route("SignUp")]
-        public bool SignUp(OwnerDTO ownerDTO)
+        public MVCResultModel<bool> SignUp(OwnerDTO ownerDTO)
         {
+            var result = new MVCResultModel<bool>();
             if (ownerDTO == default(OwnerDTO))
-                throw new ArgumentNullException("OwnerDTO");
+                result.SetException(new ArgumentNullException());
             var isUserValid = _authenticationOwnerService.IsUserValid(ownerDTO);
             if (!isUserValid)
             {
                 _ownerService.InsertOwner(ownerDTO);
-                return true;
+                result.SetData(true);
             }
             else
             {
-                return false;
+                result.SetException(new Exception());
+                result.SetData(false);
             }
+
+            return result;
         }
 
         [HttpPost]
         [Route("IsOwnerValid")]
-        public OwnerDTO IsOwnerValid(OwnerDTO ownerDTO)
+        public MVCResultModel<OwnerDTO> IsOwnerValid(OwnerDTO ownerDTO)
         {
+            var result = new MVCResultModel<OwnerDTO>();
             if (ownerDTO == default(OwnerDTO))
-                throw new ArgumentNullException("Bos Parametre");
+                result.SetException(new ArgumentNullException());
 
             var isUserValid = _authenticationOwnerService.IsUserValid(ownerDTO);
             var owner = _ownerService.GetOwnerWithEmail(ownerDTO.Email);
             if (isUserValid)
             {
-                return owner;
+                result.SetData(owner);
+                result.SetCount(1);
             }
             else
             {
-                throw new ArgumentNullException("Bos Parametre");
+                result.SetException(new Exception());
             }
+
+            return result;
         }
 
         [HttpPost]
         [Route("DeleteOwner/{id}")]
-        public string DeleteOwner(Guid id)
+        public MVCResultModel<int> DeleteOwner(Guid id)
         {
+            var result = new MVCResultModel<int>();
             if (id == Guid.Empty)
             {
-                return "Id Bos Geliyor!";
+                result.SetException(new ArgumentNullException());
             }
             var owner = _ownerService.GetById(id);
             if (owner != default(OwnerDTO))
             {
-                _ownerService.DeleteOwner(owner);
-                return "Deleted Process is done with successfuly!";
+                result.SetData(_ownerService.DeleteOwner(owner));
+            }
+            else
+            {
+                result.SetException(new Exception());
             }
 
-            return "Error!";
+            return result;
+
         }
 
         [HttpPost]
         [Route("UpdateOwner")]
-        public bool UpdateOwner(OwnerDTO owner)
+        public MVCResultModel<int> UpdateOwner(OwnerDTO owner)
         {
+            var result = new MVCResultModel<int>();
+
             if (owner == default(OwnerDTO))
             {
-                return false;
+                result.SetException(new ArgumentNullException());
             }
 
             var ownerInfo = _ownerService.GetById(owner.Id);
@@ -115,35 +133,32 @@ namespace Loyalty.Web.Controllers
             {
                 ownerInfo.Email = owner.Email;
             }
-            if (owner.IsActive == true)
-            {
-                ownerInfo.IsActive = true;
-            }
-            if (owner.IsDeleted == false)
-            {
-                ownerInfo.IsDeleted = false;
-            }
 
-            _ownerService.UpdateOwner(ownerInfo);
-
-            return true;
+            result.SetData(_ownerService.UpdateOwner(ownerInfo));
+            return result;
         }
 
         [HttpPost]
         [Route("GetOwnerById/{id}")]
-        public OwnerDTO GetOwnerById(Guid id)
+        public MVCResultModel<OwnerDTO> GetOwnerById(Guid id)
         {
-            if (id == Guid.Empty)
-                throw new ArgumentNullException("Parameter is null");
+            var result = new MVCResultModel<OwnerDTO>();
 
+            if (id == Guid.Empty)
+                result.SetException(new ArgumentNullException());
             var owner = _ownerService.GetById(id);
-            return owner;
+            result.SetData(owner);
+
+            return result;
         }
 
         [HttpPost]
         [Route("UpdatePoint")]
-        public OwnerDTO UpdatePointOfOwner(AmountModel model)
+        [Obsolete("Feature, maybe it can be added!")]
+        public MVCResultModel<OwnerDTO> UpdatePointOfOwner(AmountModel model)
         {
+
+            var result = new MVCResultModel<OwnerDTO>();
             if (model.Amount == 0 || model.CustomerId == Guid.Empty)
                 throw new ArgumentNullException("Parameters are null!");
 
@@ -155,7 +170,9 @@ namespace Loyalty.Web.Controllers
 
             //owner.Point += ((Math.Round(model.Amount, 2) / 100)) * model.Percent;
             //UpdateOwner(owner);
-            return owner;
+            result.SetData(owner);
+
+            return result;
         }
 
     }

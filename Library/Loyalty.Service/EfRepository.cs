@@ -82,18 +82,20 @@ namespace Loyalty.Service
         /// Update Entity
         /// </summary>
         /// <param name="entity"></param>
-        public void Update(T entity)
+        public int Update(T entity)
         {
             try
             {
                 if (entity == null)
-                    throw new ArgumentNullException("Entitiy is null!");
+                {
+                    return 0;
+                }
                 this._loyaltyDbContext.SaveChanges();
+                return 1;
             }
             catch (Exception)
             {
-
-                throw;
+                return 0;
             }
         }
 

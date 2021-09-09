@@ -1,5 +1,6 @@
 ﻿using Loyalty.Business.DTO;
 using Loyalty.Business.StoreServiceFolder;
+using Loyalty.Core;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace Loyalty.Web.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class StoreController : ControllerBase
     {
         private readonly IStoreService _storeService;
@@ -19,28 +22,44 @@ namespace Loyalty.Web.Controllers
 
         [HttpPost]
         [Route("GetStores")]
-        public List<StoreDTO> GetStores()
+        public MVCResultModel<List<StoreDTO>> GetStores()
         {
+            var result = new MVCResultModel<List<StoreDTO>>();
             var stores = _storeService.GetAllStores();
-            return stores;
+            var storeCount = _storeService.StoresCount();
+            result.SetData(stores);
+            result.SetCount(storeCount);
+            return result;
         }
 
         [HttpPost]
         [Route("InsertStore")]
-        public string InsertStore(StoreDTO store)
+        public MVCResultModel<int> InsertStore(StoreDTO store)
         {
+            var result = new MVCResultModel<int>();
             if (store == default(StoreDTO))
-                return "Parameter is null!";
+                result.SetException(new ArgumentNullException());
+            int data = _storeService.InsertStore(store);
+            if (data == 1)
+            {
+                result.SetData(data);
 
-            _storeService.InsertStore(store);
-            return "Insert Operation is done by successfully!";
+            }
+            else
+            {
+                result.SetException(new ArgumentNullException());
+            }
+            return result;
         }
 
-        public string UpdateStore(StoreDTO storeDTO)
+        [HttpPost]
+        [Route("UpdateStore")]
+        public MVCResultModel<string> UpdateStore(StoreDTO storeDTO)
         {
+            var result = new MVCResultModel<string>();
             if (storeDTO == default(StoreDTO))
             {
-                return "Parameter is null!";
+                result.SetException(new ArgumentNullException());
             }
 
             var storeInfo = _storeService.GetById(storeDTO.Id);
@@ -73,19 +92,38 @@ namespace Loyalty.Web.Controllers
                 storeInfo.Point = storeDTO.Point;
             }
 
-            return "Updated process is done by successfully!";
+            result.SetData("Updated process is done by successfully!");
+            return result;
         }
 
-        public string DeleteStore(Guid id)
+        [HttpPost]
+        [Route("DeleteStore")]
+        public MVCResultModel<string> DeleteStore(Guid id)
         {
+            var result = new MVCResultModel<string>();
             if (id == Guid.Empty)
             {
-                return "Parameter is null!";
+                result.SetException(new ArgumentNullException());
             }
             var store = _storeService.GetById(id);
             _storeService.DeleteStore(store);
 
-            return "Delete process is done by successfully!";
+            result.SetData("Delete process is done by successfully!");
+            return result;
+        }
+
+        [HttpPost]
+        [Route("UpdateThreshHold")]
+        public MVCResultModel<int> UpdateThreshold(decimal thresholdpoint, Guid storeId)
+        {
+            var result = new MVCResultModel<int>();
+
+            if (thresholdpoint == 0 || storeId == Guid.Empty)
+            {
+                result.SetException(new ArgumentNullException());
+            }
+            result.SetData(_storeService.UpdateThreshHold(thresholdpoint, storeId));
+            return result;
         }
     }
 }

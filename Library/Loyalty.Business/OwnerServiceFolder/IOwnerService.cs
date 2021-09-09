@@ -9,15 +9,16 @@ namespace Loyalty.Business.OwnerServiceFolder
     {
         OwnerDTO GetById(Guid id);
 
-        void DeleteOwner(OwnerDTO owner);
+        int DeleteOwner(OwnerDTO owner);
 
         List<OwnerDTO> GetAllOwners();
+        int GetOwnersCount();
 
         OwnerDTO GetOwnerWithEmail(string email);
 
-        void InsertOwner(OwnerDTO owner);
+        int InsertOwner(OwnerDTO owner);
 
 
-        void UpdateOwner(OwnerDTO owner);
+        int UpdateOwner(OwnerDTO owner);
     }
 }

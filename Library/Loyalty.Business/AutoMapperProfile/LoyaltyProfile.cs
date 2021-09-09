@@ -18,6 +18,7 @@ namespace Loyalty.Business.AutoMapperProfile
                 cfg.CreateMap<Owner, OwnerDTO>();
                 cfg.CreateMap<OwnerDTO, Owner>();
                 cfg.CreateMap<Store, StoreDTO>();
+                cfg.CreateMap<StoreDTO, Store>();
                 cfg.CreateMap<CustomerStore, CustomerStoreDTO>();
                 cfg.CreateMap<CustomerStoreDTO, CustomerStore>();
         });

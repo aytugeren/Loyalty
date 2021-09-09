@@ -13,6 +13,7 @@ namespace Loyalty.Business.DTO
         public string County { get; set; }
         public string Phone { get; set; }
         public int Point { get; set; }
+        public decimal Threshold { get; set; }
         public Guid OwnerId { get; set; }
 
         public OwnerDTO Owner { get; set; }

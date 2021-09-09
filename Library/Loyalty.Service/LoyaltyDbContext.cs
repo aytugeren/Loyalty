@@ -16,7 +16,7 @@ namespace Loyalty.Service
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server = DESKTOP-DHVOGDN; Database=Loyalty;Trusted_Connection=True");
+            optionsBuilder.UseSqlServer(@"Server = DESKTOP-VD01PB5\SQLEXPRESS; Database=Loyalty;Trusted_Connection=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

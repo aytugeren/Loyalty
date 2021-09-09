@@ -11,11 +11,13 @@ namespace Loyalty.Business.StoreServiceFolder
     public class StoreService : IStoreService
     {
         private readonly IRepository<Store> _storeRepository;
+        private readonly IRepository<Owner> _ownerRepository;
         private readonly IMapper _mapper;
 
-        public StoreService(IRepository<Store> storeRepository, IMapper mapper)
+        public StoreService(IRepository<Store> storeRepository, IRepository<Owner> ownerRepository ,IMapper mapper)
         {
             this._storeRepository = storeRepository;
+            this._ownerRepository = ownerRepository;
             this._mapper = mapper;
         }
 
@@ -41,6 +43,12 @@ namespace Loyalty.Business.StoreServiceFolder
             return StoreDTOs;
         }
 
+        public int StoresCount()
+        {
+            var stores = _storeRepository.GetAll().Count;
+            return stores;
+        }
+
         public StoreDTO GetById(Guid id)
         {
             if (id == Guid.Empty)
@@ -49,11 +57,22 @@ namespace Loyalty.Business.StoreServiceFolder
             return _mapper.Map<StoreDTO>(store);
         }
 
-        public void InsertStore(StoreDTO store)
+        public int InsertStore(StoreDTO store)
         {
             if (store == null)
-                throw new ArgumentNullException("Parameter is null");
-            _storeRepository.Insert(_mapper.Map<Store>(store));
+                return 0;
+            var isOwnerIsValid = _ownerRepository.GetById(store.OwnerId);
+            if (isOwnerIsValid != null)
+            {
+                store.CreatedTime = DateTime.Now;
+                _storeRepository.Insert(_mapper.Map<Store>(store));
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+
         }
 
         public void UpdateStore(StoreDTO store)
@@ -62,6 +81,17 @@ namespace Loyalty.Business.StoreServiceFolder
                 throw new ArgumentNullException("Parameter is null");
             store.UpdatedTime = DateTime.Now;
             _storeRepository.Update(_mapper.Map<Store>(store));
+        }
+
+        public int UpdateThreshHold(decimal threshold, Guid storeId)
+        {
+            var store = _storeRepository.GetById(storeId);
+
+            store.Threshold = threshold;
+
+            var result = _storeRepository.Update(store);
+
+            return result;
         }
     }
 }
