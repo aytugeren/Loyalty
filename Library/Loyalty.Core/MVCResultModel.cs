@@ -34,6 +34,11 @@ namespace Loyalty.Core
             this.Message = err.Message;
         }
 
+        public void SetMessage(string message)
+        {
+            this.Message = message;
+        }
+
         public T Data { get; set; }
 
         public int DataCount { get; set; }

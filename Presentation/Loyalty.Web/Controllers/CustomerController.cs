@@ -101,9 +101,9 @@ namespace Loyalty.Web.Controllers
                 {
                     customerInfo.Firstname = customer.Firstname;
                 }
-                if (!String.IsNullOrEmpty(customer.Lastname))
+                if (!String.IsNullOrEmpty(customer.Surname))
                 {
-                    customerInfo.Lastname = customer.Lastname;
+                    customerInfo.Surname = customer.Surname;
                 }
                 if (!String.IsNullOrEmpty(customer.Password))
                 {

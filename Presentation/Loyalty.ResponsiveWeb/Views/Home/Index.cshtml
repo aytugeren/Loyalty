@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script type="text/javascript">
+    window.onload = function () {
+        getCustomers();
+    };
+</script>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 10px">#</th>
+                        <th>CustomerName</th>
+                        <th>Threshold</th>
+                        <th style="width: 40px">Percentage</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody id="customerTable">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="EditModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Blog Düzenleme</h2>
+            </div>
+            <div class="modal-body">
+                <div class="hidden">
+                    <input type="hidden" id="CustomerId" name="CustomerId" />
+                </div>
+                <div class="form-group">
+                    @Html.Label("Customer Firstname")
+                    <input type="text" class="form-control" id="CustomerFirstName" name="CustomerFirstName" />
+                </div>
+                <div class="form-group">
+                    @Html.Label("Customer Surname")
+                    <input type="text" class="form-control" id="CustomerSurName" name="CustomerSurName" />
+                </div>
+                <div class="form-group">
+                    @Html.Label("Customer Email")
+                    <input type="text" class="form-control" id="Email" name="Email" />
+                </div>
+                <div class="form-group">
+                    @Html.Label("Threshold")
+                    <input type="text" class="form-control" id="Threshold" name="Threshold" />
+                </div>
+                <div class="form-group">
+                    <input type="button" value="Kaydet" onclick="saveCustomer()" class="btn btn-primary">
+                    <input type="button"
+                           value="Kapat"
+                           class="btn btn-danger"
+                           data-dismiss="modal"
+                           id="close" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

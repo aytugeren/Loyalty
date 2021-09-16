@@ -8,5 +8,9 @@
     <ProjectReference Include="..\..\Library\Loyalty.Business\Loyalty.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="View\" />
+  </ItemGroup>
+
 
 </Project>

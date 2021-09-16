@@ -91,13 +91,31 @@ namespace Loyalty.Web.Controllers
             {
                 storeInfo.Point = storeDTO.Point;
             }
+            if (storeDTO.IsActive && !storeInfo.IsActive)
+            {
+                storeInfo.IsActive = true;
+            }
+            if (!storeDTO.IsActive && storeInfo.IsActive)
+            {
+                storeInfo.IsActive = false;
+            }
+            if (storeDTO.IsDeleted && !storeInfo.IsDeleted)
+            {
+                storeInfo.IsDeleted = true;
+            }
+            if (!storeDTO.IsDeleted && storeInfo.IsDeleted)
+            {
+                storeInfo   .IsDeleted = false;
+            }
+
+            _storeService.UpdateStore(storeInfo);
 
             result.SetData("Updated process is done by successfully!");
             return result;
         }
 
         [HttpPost]
-        [Route("DeleteStore")]
+        [Route("DeleteStore/{id}")]
         public MVCResultModel<string> DeleteStore(Guid id)
         {
             var result = new MVCResultModel<string>();
@@ -114,15 +132,26 @@ namespace Loyalty.Web.Controllers
 
         [HttpPost]
         [Route("UpdateThreshHold")]
-        public MVCResultModel<int> UpdateThreshold(decimal thresholdpoint, Guid storeId)
+        public MVCResultModel<int> UpdateThreshold(StoreDTO store)
         {
             var result = new MVCResultModel<int>();
 
-            if (thresholdpoint == 0 || storeId == Guid.Empty)
+            if (store.Threshold == 0 || store.Id == Guid.Empty)
             {
                 result.SetException(new ArgumentNullException());
             }
-            result.SetData(_storeService.UpdateThreshHold(thresholdpoint, storeId));
+
+            var resultStore = _storeService.UpdateThreshHold(store.Threshold, store.Id);
+            if (resultStore != 1)
+            {
+                result.SetMessage("You cannot change the threshold yet.");
+                result.SetData(resultStore);
+            }
+            else
+            {
+                result.SetMessage("Your threshold is changed. Another changing time will be available after 30 days!");
+                result.SetData(resultStore);
+            }
             return result;
         }
     }

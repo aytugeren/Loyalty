@@ -42,7 +42,7 @@ namespace Loyalty.Business.CustomerServiceFolder
             var result = _customerRepository.GetAll().FirstOrDefault(x => (x.Email.ToLower() == customerDTO.Email.ToLower()));
             if (result != null)
             {
-                if (customerDTO.Email.Contains("@") && customerDTO.Password == result.Password)
+                if (customerDTO.Email.Contains("@") || customerDTO.Password == result.Password)
                 {
                     var customers = _customerRepository.GetById(result.Id);
                     if (customers != null)
@@ -59,10 +59,31 @@ namespace Loyalty.Business.CustomerServiceFolder
         public void saveUser(CustomerDTO customerDTO)
         {
             Random random = new Random();
-            customerDTO.Password = HashPassword(customerDTO.Password);
-            customerDTO.Password = random.Next(1000, 9999).ToString();
+            customerDTO.Password = random.Next(100000, 999999).ToString();
             customerDTO.CreatedTime = DateTime.Now;
-            _customerRepository.Insert(_mapper.Map<Customer>(customerDTO));
+
+            Customer customer = new Customer()
+            {
+                Id = Guid.NewGuid(),
+                CreatedTime = customerDTO.CreatedTime,
+                Email = customerDTO.Email,
+                Firstname = customerDTO.Firstname,
+                Surname = customerDTO.Surname,
+                Point = customerDTO.Point,
+                Password = customerDTO.Password,
+                IsActive = true,
+                IsDeleted = false,
+                CustomerStores = customerDTO.CustomerStores.Select(x => new CustomerStore
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedTime = DateTime.Now,
+                    IsActive = true,
+                    IsDeleted = false,
+                    StoreId = x.StoreId
+                }).ToList()
+            };
+
+            _customerRepository.Insert(customer);
         }
     }
 }

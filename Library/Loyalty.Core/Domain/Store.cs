@@ -14,6 +14,8 @@ namespace Loyalty.Core.Domain
         public string Phone { get; set; }
         public int Point { get; set; }
         public decimal Threshold { get; set; }
+        public DateTime? ThresholdEndDate { get; set; }
+
         public Guid OwnerId { get; set; }
 
         public Owner Owner { get; set; }

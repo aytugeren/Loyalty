@@ -12,6 +12,6 @@ namespace Loyalty.Core.Domain
         public string Password { get; set; }
         public decimal Point { get; set; }
 
-        public virtual ICollection<CustomerStore> CustomerStores { get; set; }
+        public virtual List<CustomerStore> CustomerStores { get; set; }
     }
 }

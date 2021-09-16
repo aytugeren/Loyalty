@@ -13,6 +13,8 @@ namespace Loyalty.Service.Mapping
         {
             builder.HasKey(x => new { x.CustomerId, x.StoreId });
 
+            builder.Property(x => x.Id).HasDefaultValue(Guid.NewGuid());
+            
             builder.HasOne<Store>(x => x.Store)
                 .WithMany(x => x.CustomerStores)
                 .HasForeignKey(x => x.StoreId);

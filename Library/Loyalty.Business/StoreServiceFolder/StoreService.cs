@@ -12,12 +12,14 @@ namespace Loyalty.Business.StoreServiceFolder
     {
         private readonly IRepository<Store> _storeRepository;
         private readonly IRepository<Owner> _ownerRepository;
+        private LoyaltyDbContext _loyaltyDbContext;
         private readonly IMapper _mapper;
 
-        public StoreService(IRepository<Store> storeRepository, IRepository<Owner> ownerRepository ,IMapper mapper)
+        public StoreService(IRepository<Store> storeRepository, IRepository<Owner> ownerRepository ,IMapper mapper, LoyaltyDbContext loyaltyDbContext)
         {
             this._storeRepository = storeRepository;
             this._ownerRepository = ownerRepository;
+            this._loyaltyDbContext = loyaltyDbContext;
             this._mapper = mapper;
         }
 
@@ -80,14 +82,22 @@ namespace Loyalty.Business.StoreServiceFolder
             if (store == null)
                 throw new ArgumentNullException("Parameter is null");
             store.UpdatedTime = DateTime.Now;
-            _storeRepository.Update(_mapper.Map<Store>(store));
+            var storeDB = _mapper.Map<Store>(store);
+            _loyaltyDbContext.tblStore.Update(storeDB);
+            _loyaltyDbContext.SaveChanges();
         }
 
         public int UpdateThreshHold(decimal threshold, Guid storeId)
         {
             var store = _storeRepository.GetById(storeId);
 
+            if (store.ThresholdEndDate > DateTime.Now)
+            {
+                return 0;
+            }
+
             store.Threshold = threshold;
+            store.ThresholdEndDate = DateTime.Now.AddDays(30);
 
             var result = _storeRepository.Update(store);
 
